@@ -7,59 +7,62 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert
 } from 'react-native';
-import { WebBrowser } from 'expo';
+import { WebBrowser,Icon,MapView, PROVIDER_GOOGLE } from 'expo';
 
 import { MonoText } from '../components/StyledText';
+import LocationProvider from '../components/NavigationProvider';
+
+
+const latitudeDelta= 0.0922 
+const longitudeDelta= 0.0421
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+  
+  static navigationOptions = ({ navigate, navigation }) => ({
+    title:'Dashboard',
+    headerRight: (
+      <Icon.Ionicons 
+        name={Platform.OS=='ios'?'ios-more':'md-more'}
+        size={26}
+        style={{ marginRight: 20 }}
+        onPress={()=>Alert.alert('Worked')}
+      />
+    ),
+
+    headerLeft:(
+      <Icon.Ionicons 
+        name={Platform.OS=='ios'?'ios-menu':'md-menu'}
+        size={26}
+        style={{ marginLeft: 10 }}
+        onPress={()=> navigation.toggleDrawer()}
+      />
+    )
+  })
 
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
+        <LocationProvider>
+          {value=>(<MapView 
+            style={{
+              flex:1
+            }}
+            region={{ 
+              latitude:value.lat,
+              longitude:value.lng,
+              latitudeDelta,
+              longitudeDelta
+             }}
+            provider={PROVIDER_GOOGLE}
+            onRegionChangeComplete={
+              (region) =>{
+                value.c(region)
               }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
+            }
+        />)}
+        </LocationProvider>
       </View>
     );
   }
