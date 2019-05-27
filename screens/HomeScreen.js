@@ -13,7 +13,7 @@ import { WebBrowser,Icon,MapView, PROVIDER_GOOGLE } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 import LocationProvider from '../components/NavigationProvider';
-
+import MainTabNavigator from './../navigation/MainTabNavigator';
 
 const latitudeDelta= 0.0922 
 const longitudeDelta= 0.0421
@@ -40,6 +40,12 @@ export default class HomeScreen extends React.Component {
       />
     )
   })
+
+
+  componentDidMount() {
+    // this.props.navigation.toggleDrawer()
+  }
+  
 
   render() {
     return (

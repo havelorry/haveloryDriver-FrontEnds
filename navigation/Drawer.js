@@ -3,21 +3,13 @@ import {createDrawerNavigator} from "react-navigation"
 import {Icon} from "expo"
 import {Platform} from "react-native"
 import TestScreen from "./../screens/TestScreen"
-import HomeScreen from './../screens/HomeScreen'
 import SideMenu from "../components/SideMenu";
-// import SideMenu from "./../components/SideMenu"
-
+import MainTabNavigator from "./MainTabNavigator"
 export const asset = (x,y) => Platform.OS == 'ios' ? x:y 
 
 export default createDrawerNavigator({
     
-    Ride:{
-        screen:HomeScreen,
-        navigationOptions:{
-            drawerLabel:'My Rides',
-            drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-car','md-car')} size={20} color={'black'} />
-        }
-    },
+    Ride:MainTabNavigator,
     Stats:{
         screen:TestScreen,
         navigationOptions:{
