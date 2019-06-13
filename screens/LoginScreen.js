@@ -9,12 +9,15 @@ import {
 import Button from "../components/Button";
 import {FormTextInput} from "./../components/FormTextInput";
 import imageLogo from "../assets/images/logo.jpeg";
-import { Platform } from "react-native";
+import { Platform,Alert,AsyncStorage } from "react-native";
+
+
+const {loginUrl} = require('./../components/constants/api')
 
 const strings = {
     LOGIN: "Log In",
     WELCOME_TO_LOGIN: "Welcome to the login screen!",
-    EMAIL_PLACEHOLDER: "Email",
+    EMAIL_PLACEHOLDER: "username",
     PASSWORD_PLACEHOLDER: "Password",
     EMAIL_REQUIRED: "Email is required",
     PASSWORD_REQUIRED: "Password is required"
@@ -30,9 +33,12 @@ class LoginScreen extends React.Component {
         email: "",
         password: "",
         emailTouched: false,
-        passwordTouched: false
+        passwordTouched: false,
+        fetching:false
     }
   }
+
+
 
   handleEmailChange = (email) => {
     this.setState({ email: email });
@@ -57,7 +63,55 @@ class LoginScreen extends React.Component {
   };
 
   handleLoginPress = () => {
-    console.log("Login button pressed");
+    this.setState({fetching:true})
+    
+    console.log(JSON.stringify({
+      username:this.state.email,
+      password:this.state.password
+    }))
+    
+    fetch(loginUrl,{
+      method:'post',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        username:this.state.email,
+        password:this.state.password
+      })
+    }).then(resp => resp.json())
+      .catch(err =>{
+        this.setState({fetching:true})
+      })
+      .then(result => {
+        const {token= null} = result
+        if (token) {
+          AsyncStorage.setItem('token',token).then(
+            ()=> this.props.navigation.navigate('Auth')
+          )
+
+        }else{
+          const {error} = result
+          Alert.alert('Login Failed',error,[
+            {
+              text:'dismiss',
+              onPress:()=>{
+                this.setState({
+                  email: "",
+                  password: "",
+                  emailTouched: false,
+                  passwordTouched: false,
+                  fetching:false
+              })
+              }
+            }
+          ])
+        }
+
+        this.setState({fetching:true})
+      }).catch(w => {
+        this.setState({fetching:true})
+      })
   };
 
   render() {
@@ -115,7 +169,7 @@ class LoginScreen extends React.Component {
             error={passwordError}
           />
           <Button
-            label={strings.LOGIN}
+            label={this.state.fetching ? 'Logging In ..':strings.LOGIN}
             onPress={this.handleLoginPress}
             disabled={!email || !password}
           />
