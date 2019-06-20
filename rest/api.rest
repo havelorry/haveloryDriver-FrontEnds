@@ -15,3 +15,9 @@ Content-Type: application/json
 	"username":"5454699545","password":"123456789","first_name":"ishendra","last_name":"Pratap","email":"ishnedra@gmail.com",
 	"address":"bahadurpur sahar auraiya","vehicle_number":8574,"locations":"kanpur","age":21,"mobile":343434343
 }
+
+
+
+### profile get
+
+GET https://have-drivers.herokuapp.com/driver/profile/?username=5454699545  HTTP/1.1

@@ -5,6 +5,7 @@ import {Platform} from "react-native"
 import TestScreen from "./../screens/TestScreen"
 import SideMenu from "../components/SideMenu";
 import MainTabNavigator from "./MainTabNavigator"
+import ProfileView from "./../screens/ProfileView"
 export const asset = (x,y) => Platform.OS == 'ios' ? x:y 
 
 export default createDrawerNavigator({
@@ -47,7 +48,7 @@ export default createDrawerNavigator({
         }
     },
     Settings:{
-        screen:TestScreen,
+        screen:ProfileView,
         navigationOptions:{
             drawerLabel:'Settings',
             drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-options','md-options')} size={20} color={'black'} />

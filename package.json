@@ -12,10 +12,14 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "add": "^2.0.6",
     "expo": "^32.0.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-navigation": "^3.0.9"
+    "react-native-elements": "^1.1.0",
+    "react-navigation": "^3.0.9",
+    "recompose": "^0.30.0",
+    "yarn": "^1.16.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
