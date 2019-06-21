@@ -3,7 +3,7 @@ import {AsyncStorage,View,Text,TextInput} from "react-native"
 import {loginUrl, profileUrl} from "./../components/constants/api"
 import { ListItem } from 'react-native-elements'
 
-function transformInput(value){
+export function transformInput(value){
     return value.indexOf('_') > -1 ? value.split('_').join(' ') :value 
 }
 
@@ -69,6 +69,18 @@ export default class ProfileView extends React.Component {
                             }
                         }
                         bottomDivider={true}
+                        onPress= {
+                            ()=>{
+                                this.props.navigation.navigate({
+                                    routeName:'EditSettings',
+                                    params:{
+                                        user:this.state.readOnly,
+                                        property:left,
+                                        inputValue:right
+                                    }
+                                })
+                            }
+                        }
                     />
                 )
             }

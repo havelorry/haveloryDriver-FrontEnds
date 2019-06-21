@@ -61,7 +61,10 @@ LinksStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
-  Refferels: SettingsScreen,
+  Refferels: LinksScreen,
+  EditSettings:SettingsScreen
+},{
+  initialRouteName:'Refferels'
 });
 
 SettingsStack.navigationOptions = {

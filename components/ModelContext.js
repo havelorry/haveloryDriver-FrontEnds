@@ -1,6 +1,5 @@
 import React from 'react'
 const ModelContext  = React.createContext({})
-
 const Modelprovider = ModelContext.Provider
 export const ModelConsumer = ModelContext.Consumer
 
