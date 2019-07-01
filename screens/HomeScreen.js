@@ -7,7 +7,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 import { WebBrowser,Icon,MapView, PROVIDER_GOOGLE } from 'expo';
 
@@ -46,6 +47,7 @@ export default class HomeScreen extends React.Component {
     // this.props.navigation.toggleDrawer()
   }
   
+  
 
   render() {
     return (
@@ -55,6 +57,7 @@ export default class HomeScreen extends React.Component {
             style={{
               flex:1
             }}
+
             region={{ 
               latitude:value.lat,
               longitude:value.lng,
@@ -65,6 +68,7 @@ export default class HomeScreen extends React.Component {
             onRegionChangeComplete={
               (region) =>{
                 value.c(region)
+                
               }
             }
         />)}

@@ -1,6 +1,6 @@
 import React from "react"
-import {Platform,PermissionsAndroid} from "react-native"
-
+import {Platform,PermissionsAndroid,AsyncStorage} from "react-native"
+import {updateLocationUrl} from "./../components/constants/api"
 async function requestPermissions(func){
     if (Platform.OS == 'android') {
         try {
@@ -52,6 +52,33 @@ class LocationProvider extends React.Component{
         this.getLocation = this.getLocation.bind(this)
     }
 
+    _updateRegion = (region) => {
+        console.log('working')
+        AsyncStorage.getItem('username').then(
+          name => {
+              const {latitude:x,longitude:y} = region
+              url = updateLocationUrl
+              fetch(url,{
+                  method:'post',
+                  headers:{
+                      'Content-Type':'application/json'
+                  },
+                  body:JSON.stringify({
+                      active:1,
+                      username:name,
+                      location:JSON.stringify({
+                        x,y
+                        })
+                  })
+              })
+              .then( res => res.json())
+              .then(res => console.log(res))
+
+          }
+        )    
+      }
+
+      
     async getLocation(){
         await navigator.geolocation.getCurrentPosition(
             (postion) => {
@@ -64,12 +91,9 @@ class LocationProvider extends React.Component{
                         fetched:true,
                     }),
                     ()=> {
-                        if(this.props.setCurrent){
-                            this.props.setCurrent(postion.coords)
-                        }else{
-                            console.log('No IMPL');
-                            
-                        }
+                        console.log('====================================');
+                        this._updateRegion(postion.coords)
+                        console.log('====================================');
                     }
                 )
             },
@@ -79,6 +103,7 @@ class LocationProvider extends React.Component{
             }
         )
     }
+
 
 
     changeRegion(region){

@@ -64,6 +64,7 @@ export default class SettingsScreen extends React.Component {
                 })
               }).then(
                 (resp) => {
+                  console.log(resp)
                   this.props.navigation.goBack()
                 }
               ).catch(

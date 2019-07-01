@@ -80,6 +80,7 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   DashStack,
   LinksStack,
-  SettingsStack
-  
+  SettingsStack  
 },);
+
+
