@@ -2,6 +2,17 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import RideStore from "./stores/RideStore"
+import {Provider} from "mobx-react"
+import { observer,inject } from "mobx-react";
+
+const stores = {
+    RideStore
+}
+
+const AppWithState = (props) =>  <Provider {...stores}>
+  <AppNavigator />
+</Provider>
 
 export default class App extends React.Component {
   state = {
@@ -21,7 +32,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <AppWithState />
         </View>
       );
     }

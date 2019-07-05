@@ -84,13 +84,18 @@ class LoginScreen extends React.Component {
         this.setState({fetching:true})
       })
       .then(result => {
-        const {token= null} = result
-        if (token) {
+        const {token= null,driverId=null} = result
+        if (token && driverId) {
           AsyncStorage.setItem('token',token).then(
             ()=> {
               AsyncStorage.setItem('username',this.state.email).then(
                 ()=> {
-                  this.props.navigation.navigate('Auth')
+                  AsyncStorage.setItem('userId',driverId).then(
+                    ()=> {
+                      this.props.navigation.navigate('Auth')
+                    }
+                  )
+                  
                 }
               )
             }

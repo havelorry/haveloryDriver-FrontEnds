@@ -6,7 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-
+import Earnings from "./../screens/Earning"
 /* const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
@@ -45,12 +45,11 @@ DashStack.navigationOptions = {
 };
 
 
+const EarningStack = createStackNavigator({
+  Earnings
+})
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
-
-LinksStack.navigationOptions = {
+EarningStack.navigationOptions = {
   tabBarLabel: 'Earnings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -79,7 +78,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   DashStack,
-  LinksStack,
+  EarningStack,
   SettingsStack  
 },);
 

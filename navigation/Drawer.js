@@ -1,12 +1,24 @@
 import React from "react"
-import {createDrawerNavigator} from "react-navigation"
+import {createDrawerNavigator,createStackNavigator} from "react-navigation"
 import {Icon} from "expo"
 import {Platform} from "react-native"
 import TestScreen from "./../screens/TestScreen"
 import SideMenu from "../components/SideMenu";
 import MainTabNavigator from "./MainTabNavigator"
 import ProfileView from "./../screens/ProfileView"
+import History from "./../screens/History"
+
+import RideDetail from "./../screens/RideDetail"
+
 export const asset = (x,y) => Platform.OS == 'ios' ? x:y 
+
+const HistoryStack = createStackNavigator({
+    RideHistory:History,
+    RideDetail:RideDetail,
+},{
+    initialRouteName:'RideHistory'
+})
+
 
 export default createDrawerNavigator({
     
@@ -33,7 +45,7 @@ export default createDrawerNavigator({
         }
     },
     History:{
-        screen:TestScreen,
+        screen:HistoryStack,
         navigationOptions:{
             drawerLabel:'Ride History',
             drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-refresh','md-refresh')} size={20} color={'black'} />
