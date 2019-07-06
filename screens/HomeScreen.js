@@ -86,7 +86,7 @@ class HomeScreen extends Component {
       const newLat = latitude.toFixed(3)
       const newLng = longitude.toFixed(3)
 
-      if (newLat == oldLat && newLng == oldLng) {
+      if (newLat - oldLat == 0 && newLng - oldLng == 0) {
         console.log('Equel coordinates making request is waste')
       }else{
         this.setState({ mapRegion });

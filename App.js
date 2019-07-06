@@ -6,6 +6,8 @@ import RideStore from "./stores/RideStore"
 import {Provider} from "mobx-react"
 import { observer,inject } from "mobx-react";
 
+console.disableYellowBox = true
+
 const stores = {
     RideStore
 }

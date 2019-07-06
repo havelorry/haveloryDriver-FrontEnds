@@ -69,5 +69,5 @@ export default createDrawerNavigator({
 
 },{
     initialRouteName:'Ride',
-        contentComponent:SideMenu
+    contentComponent:SideMenu
 })

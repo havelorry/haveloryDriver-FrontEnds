@@ -1,7 +1,7 @@
 import React from "react"
 import {AsyncStorage,View,Text,TextInput} from "react-native"
 import {loginUrl, profileUrl} from "./../components/constants/api"
-import { ListItem } from 'react-native-elements'
+import { ListItem,Header } from 'react-native-elements'
 
 export function transformInput(value){
     return value.indexOf('_') > -1 ? value.split('_').join(' ') :value 
@@ -57,6 +57,15 @@ export default class ProfileView extends React.Component {
         )
 
         return <View>
+
+            <Header
+            leftComponent={{ icon: 'menu', color: '#fff', onPress:()=>{
+                this.props.navigation.toggledrawer()
+            }}}
+            
+            centerComponent={{ text: 'Profile', style: { color: '#fff' } }}
+            rightComponent={{ icon: 'home', color: '#fff' }}
+            />
             {
                 entries.map(
                     ({left,right},index) => <ListItem 
@@ -68,7 +77,7 @@ export default class ProfileView extends React.Component {
                                 name:'arrow-forward'
                             }
                         }
-                        bottomDivider={true}
+                        bottomDivider={true} 
                         onPress= {
                             ()=>{
                                 this.props.navigation.navigate({
