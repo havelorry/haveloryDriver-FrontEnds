@@ -90,7 +90,7 @@ class LoginScreen extends React.Component {
             ()=> {
               AsyncStorage.setItem('username',this.state.email).then(
                 ()=> {
-                  AsyncStorage.setItem('userId',driverId).then(
+                  AsyncStorage.setItem('userId',`${driverId}`).then(
                     ()=> {
                       this.props.navigation.navigate('Auth')
                     }

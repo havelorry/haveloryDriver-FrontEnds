@@ -41,13 +41,18 @@ function RideDetail(props) {
         const details = [
             {key:'Destination'   ,value:ride.dest_string || 'unnamed location'},
             {key:'Start'         ,value:ride.origin_string || 'unnamed location'},
-            {key:'status'        ,value:ride.status || 'unknown Status'},
-            {key:'Driver Contact',value:ride.driver.username || 'No Contact'}
+           {key:'status'        ,value:ride.status || 'unknown Status'},
+//            {key:'Driver Contact',value:ride.driver.username || 'No Contact'}
         ]
 
         setRide(details)
         setId(ride.id)
+
+        console.log('====================================');
+        console.log(ride.status);
+        console.log('====================================');
     },[])
+
 
     const {RideStore} = props
     return <View>
@@ -94,21 +99,13 @@ function RideDetail(props) {
 
        <View  style={{height:10}}/>     
        
-       <Button
-        style={{height:40}}
-        disabled={ride['status'] == 'COMPLETED'} 
-        title={ update ? 'loading ...':'Complete'}
-        
-        onPress={
-            () => updateRideStatus({
-                id,
-                status:3
-            })            
-        }
-       />
+       
 
        <View  style={{height:10}}/>
 
+       {
+       ride.status == "ACCEPTED" || ride.status == "CANCELLED"
+       ? null :
        <Button
         style={{height:40}}
         disabled = {ride['status'] == 'COMPLETED' || ride['status'] == 'CANCELLED'} 
@@ -119,6 +116,22 @@ function RideDetail(props) {
                 updateRideStatus({
                     id,
                     status:4
+                })
+            }
+        }
+       />
+}
+    <View  style={{height:10}}/>
+        
+    <Button
+        style={{height:40}} 
+        title={update ? 'loading ...':'ACCEPT'}
+        color={'#a00'}
+        onPress={
+            ()=> {
+                updateRideStatus({
+                    id,
+                    status:2
                 })
             }
         }

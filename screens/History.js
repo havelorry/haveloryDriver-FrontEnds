@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from "react"
 import { HistoryUrl, driverHistory } from "../components/constants/api";
 import {ListItem} from "react-native-elements"
-import {FlatList,View,Text} from "react-native"
+import {FlatList,View,AsyncStorage} from "react-native"
 import {FontAwesome} from "@expo/vector-icons"
 import {Bubbles} from "react-native-loader"
 function History(props){
@@ -9,6 +9,7 @@ function History(props){
     const [loading,setLoading] = useState(false)
 
     const FetchHistory = (link) => {
+        console.log(link)
         fetch(link).then(
             res => res.json() 
         ).catch(err => console.log(err))
@@ -24,7 +25,12 @@ function History(props){
     useEffect(()=> {
 
         setLoading(true)
-        FetchHistory(driverHistory(2))
+        AsyncStorage.getItem('userId').then(
+            driver => {
+                FetchHistory(driverHistory(driver))
+            }
+        )
+        
     },[])
 
     console.log('HISTORY'+history)

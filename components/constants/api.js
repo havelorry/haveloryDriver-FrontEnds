@@ -9,7 +9,7 @@ export const MAIN_API = 'http://have-drivers.herokuapp.com'
 
 const RideStatus = `${MAIN_API}/driver/rides/`
 const HistoryUrl = `${MAIN_API}/driver/rides/`
-const driverHistory = (id) => `${MAIN_API}/driver/history/?identifier=${id}&by=customer`
+const driverHistory = (id) => `${MAIN_API}/driver/history/?identifier=${id}&by=driver`
 
 export {
     loginUrl,

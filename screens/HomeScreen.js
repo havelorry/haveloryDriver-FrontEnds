@@ -27,17 +27,19 @@ const Modded = inject('RideStore')(observer((props) =>{
          <Marker coordinate={{...dst}}>
             <FontAwesome name={'map-pin'} color={'#00d'} size={32}/>
          </Marker>
+
+         {
+          current && <Polyline 
+          coordinates={[{...current},{...origin},{...dst}]}
+          strokeColor={'#8e2be2'}
+          strokeWidth={3}
+        />
+        }
       </React.Fragment>
       :null
     }
     
-    {
-      current && <Polyline 
-      coordinates={[{...current},{...origin},{...dst}]}
-      strokeColor={'#8e2be2'}
-      strokeWidth={3}
-    />
-    }
+    
   </React.Fragment>
 }))
 
@@ -76,10 +78,7 @@ class HomeScreen extends Component {
 
   _handleMapRegionChange = mapRegion => {
     const  {latitude, longitude} = mapRegion
-      const floatPoints = {
-        latitude:latitude.toFixed(4),
-        longitude:longitude.toFixed(4)
-      }
+      
       const newRegion = this.state.mapRegion
       const oldLat = parseFloat(newRegion.latitude).toFixed(3)
       const oldLng = parseFloat(newRegion.latitude).toFixed(3)
@@ -137,7 +136,7 @@ class HomeScreen extends Component {
             
         }
 
-        <Modded />        
+                
       </View>
         
     );

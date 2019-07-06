@@ -56,7 +56,7 @@ function Earning(){
                                     const cancel = sume.filter(({status}) => status == 'CANCELLED').length
                                     const success = sume.filter(({status}) => status == 'COMPLETED').length
                                     setCancelled(cancel || 0)
-                                    setCompleted(completed || 0)
+                                    setCompleted(success || 0)
                                     setEarning(total || 0)
                                 }).catch(err => console.log(err.message))
     }
@@ -64,11 +64,10 @@ function Earning(){
     useEffect(() => {
         AsyncStorage.getItem('userId').then(
             (userId) =>{
-                if (userId !== null || userId !== '') {
+                console.log('====================================');
+                console.log('called');
+                console.log('====================================');
                     getSumaries(userId)
-                }else{
-                    getSumaries(2)
-                }
             }
         )
         return () => {
