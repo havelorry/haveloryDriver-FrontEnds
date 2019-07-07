@@ -25,7 +25,7 @@ function History(props){
     useEffect(()=> {
 
         setLoading(true)
-        AsyncStorage.getItem('userId').then(
+        AsyncStorage.getItem('username').then(
             driver => {
                 FetchHistory(driverHistory(driver))
             }
