@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet,Dimensions,Platform } from 'react-native';
+import { Text, View, StyleSheet,Dimensions,Platform,AsyncStorage } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 import {Ionicons,FontAwesome} from "@expo/vector-icons"
 import MapView,{Marker, Polyline} from "react-native-maps"
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react';
-
+import {updateLocationUrl} from "./../components/constants/api"
 const {height} = Dimensions.get('window')
 
 const Modded = inject('RideStore')(observer((props) =>{
@@ -76,6 +76,22 @@ class HomeScreen extends Component {
     this._getLocationAsync();
   }
 
+  updateLocation = (data) =>{
+      console.log('====================================');
+      console.log(data);
+      console.log('====================================');
+      fetch(updateLocationUrl,{
+        method:'post',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(data)
+      }).then(jso => {
+        console.log('LOcation Updated')
+        return jso.json()
+      }).then(d => console.log(d)).catch(err => console.log(err.message))
+  }
+
   _handleMapRegionChange = mapRegion => {
     const  {latitude, longitude} = mapRegion
       
@@ -93,12 +109,7 @@ class HomeScreen extends Component {
       }  
   };
 
-  componentWillReceiveProps(nextProps , nextState){
-    console.log('=================NXT PRPS===============');
-    console.log(nextProps);
-    console.log(nextState);
-    console.log('====================================');
-  }
+  
   _getLocationAsync = async () => {
    let { status } = await Permissions.askAsync(Permissions.LOCATION);
    if (status !== 'granted') {
@@ -111,7 +122,24 @@ class HomeScreen extends Component {
 
    let location = await Location.getCurrentPositionAsync({});
    this.setState({ locationResult: JSON.stringify(location) });
-   this.props.RideStore.setCurrent(location.coords) 
+   this.props.RideStore.setCurrent(location.coords)
+
+   AsyncStorage.getItem('username').then(
+     username => {
+       if(username){
+        this.updateLocation({
+          location:JSON.stringify({
+            x:location.coords.latitude,
+            y:location.coords.longitude
+          }),
+          username,
+          active:1
+       })
+      }else{
+        console.log("USERNAME NOT FOUND");
+      }
+     }
+   ) 
    // Center the map on the location we just fetched.
     this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
   };

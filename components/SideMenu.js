@@ -8,17 +8,10 @@ export default class SideMenu extends React.Component {
 
     constructor(props){
         super(props)
-        console.log('=============LOLOLOL====================');
-        console.log(props);
-        console.log('====================================');
+       
     }
 
-    async componentDidMount(){
-         console.log('============SIDEMENU========================');
-         console.log(this.props);
-         console.log('====================================');   
-    }
-
+   
     render(){
         return <View>
                     <View 
