@@ -1,99 +1,110 @@
-import React,{useState, useEffect} from "react"
-import { HistoryUrl, driverHistory } from "../components/constants/api";
+import React from "react"
 import {ListItem} from "react-native-elements"
-import {FlatList,View,AsyncStorage} from "react-native"
+import {FlatList,View,Text,AsyncStorage} from "react-native"
 import {FontAwesome} from "@expo/vector-icons"
 import {Bubbles} from "react-native-loader"
-function History(props){
-    const [history, setHistory] = useState([])
-    const [loading,setLoading] = useState(false)
+import {inject,observer} from "mobx-react"
+import {NavigationEvents} from "react-navigation"
 
-    const FetchHistory = (link) => {
-        console.log(link)
-        fetch(link).then(
-            res => res.json() 
-        ).catch(err => console.log(err))
-        .then(data => {
-            console.log(data)
-            setHistory(data)
-            setLoading(false)
-        }).catch(err => {
-            console.log(err)
-            setLoading(false)
-        })
+class History extends React.Component {
+
+    componentWillReceiveProps(nextProps,nextState){
+        console.log('====================================');
+        console.log(nextProps.rides);
+        console.log('====================================');
+        
     }
-    useEffect(()=> {
+    render(){
+        const {rides:rds} = this.props
+        const {rides:history,loading} = rds
+        return (<View style={{flex:1}}>
 
-        setLoading(true)
-        AsyncStorage.getItem('username').then(
-            driver => {
-                FetchHistory(driverHistory(driver))
-            }
-        )
-        
-    },[])
-
-    console.log('HISTORY'+history)
-    return (<View style={{flex:1}}>
-        
-        {
-            loading 
-            &&
-            <View style = {{height:50,justifyContent:'center', alignItems:'center'}}>
-                <Bubbles size={10}/>
-            </View>
-        }
-
-        {
-            (!loading)
-             &&
-            <FlatList 
-                keyExtractor = { (item,index) => index.toString()}
-                data={history}
-                renderItem = {
-                    ({item}) => <ListItem 
-                        title= {item.status}
-                        subtitle=  {
-                            item.dest_string
-                        }
-
-                        leftIcon={
-                            <FontAwesome 
-                             name='dot-circle-o'
-                             size={22}
-                             color={'#8e2be2'}
-                            />
-                        }
-
-                        rightIcon={
-                            <FontAwesome 
-                                name="chevron-right" 
-                                size={22}
-                                color={'#000'}
-                                onPress={
-                                    ()=>{
-                                        props.navigation.navigate('RideDetail',{
-                                            ride:{
-                                                ...item
-                                            }
-                                        })
-                                    }
+            <NavigationEvents 
+                onDidFocus = {
+                    payload => {
+                        AsyncStorage.getItem('username').then(
+                            username => {
+                                if (username) {
+                                    this.props.rides.refresh(username)
                                 }
-                            />
-                            
-                        }
-                    />
+                            }
+                        )
+                    }
                 }
+
                 
-            
             />
-            
+            {
+                loading 
+                &&
+                <View style = {{height:50,justifyContent:'center', alignItems:'center'}}>
+                    <Bubbles size={10}/>
+                </View>
+            }
+    
+            {
+                (!loading)
+                 &&
+                <FlatList 
+                    keyExtractor = { (item,index) => index.toString()}
+                    data={history}
+                    renderItem = {
+                        ({item,index}) => <ListItem 
+                            title= {item.status}
+                            subtitle=  {
+                                item.dest_string
+                            }
+    
+                            onPress={
+                                ()=>{
+                                    rds.setCurrentRide(index)
+                                    this.props.navigation.navigate('RideDetail')
+                                }
+                            }
+                            leftIcon={
+                                <FontAwesome 
+                                 name='dot-circle-o'
+                                 size={22}
+                                 color={'#8e2be2'}
+                                />
+                            }
+    
+                            rightIcon={
+                                <FontAwesome 
+                                    name="chevron-right" 
+                                    size={22}
+                                    color={'#000'}
+                                    onPress={
+                                        ()=>{
+                                            rds.setCurrentRide(index)
+                                            this.props.navigation.navigate('RideDetail')
+                                        }
+                                    }
+                                />
+                                
+                            }
+                        />
+                    }
+                    
+                
+                />
+                
+            }
+        </View>)
+    }
+}
+
+History.navigationOptions = ({navigation}) =>({
+    title:'Ride History',
+    headerLeft:<View style={{marginLeft:11}}>
+        <FontAwesome name={'arrow-left'} size={18} onPress={
+        (e)=>{
+           navigation.toggleDrawer() 
         }
-    </View>)
-}
+    }/>
+    </View>
+})
 
-History.navigationOptions ={
-    title:'Ride History'
-}
+const InjectedHistory = inject('rides')(observer(History))
 
-export default History
+export default InjectedHistory

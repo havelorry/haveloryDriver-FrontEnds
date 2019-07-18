@@ -2,9 +2,11 @@ import React,{useState,useEffect} from "react"
 import {View,FlatList,Text,Button,Alert} from "react-native"
 import {ListItem} from "react-native-elements"
 import {FontAwesome} from "@expo/vector-icons"
-import { RideStatus } from "../components/constants/api";
+import { RideStatus, FetchDirections } from "../components/constants/api";
 import { inject } from "mobx-react";
 import { observer } from "mobx-react-lite";
+
+
 function RideDetail(props) {    
     
     const [ride,setRide] = useState([])
@@ -54,6 +56,14 @@ function RideDetail(props) {
     },[])
 
 
+    const getPath = (coord1,coord2) => {
+        fetch(FetchDirections(coord1,coord2))
+            .then( response => response.json())
+            .then(respJson => {
+                const path = respJson.routes[0].overview_polyline.points
+                props.RideStore.setPathString(path)                        
+            })
+    }
     const {RideStore} = props
     return <View>
         <FlatList 
@@ -81,7 +91,15 @@ function RideDetail(props) {
             () => {
                 const {dest_latitude,origin_latitude,dest_longitude,origin_longitude} = props.navigation.state.params.ride
                 console.log('====================================');
-                RideStore.update({
+                const origin = `${origin_latitude},${origin_longitude}`
+                const dest = `${dest_latitude},${dest_longitude}`
+                console.log(
+                    {
+                        "CURR":props.RideStore.current,
+                        origin,dest
+                    }
+                )
+                /* RideStore.update({
                     latitude:origin_latitude,
                     longitude:origin_longitude
                 },{
@@ -90,7 +108,7 @@ function RideDetail(props) {
                 })
 
                 props.navigation.navigate('Ride')
-                
+                */
                 console.log('====================================');
             }        
         }

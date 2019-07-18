@@ -8,10 +8,11 @@ import { observer } from 'mobx-react';
 import {updateLocationUrl} from "./../components/constants/api"
 const {height} = Dimensions.get('window')
 
-const Modded = inject('RideStore')(observer((props) =>{
-  const {RideStore:{fixed, origin,dst}, current} = props
-  console.log(props)
+const PolyLine = require('@mapbox/polyline')
 
+const Modded = inject('RideStore')(observer((props) =>{
+  const {RideStore:{fixed, origin,dst,path}, current} = props
+  
   return <React.Fragment>
     {
       props.current && <Marker coordinate={{...props.current}}>
@@ -29,8 +30,8 @@ const Modded = inject('RideStore')(observer((props) =>{
          </Marker>
 
          {
-          current && <Polyline 
-          coordinates={[{...current},{...origin},{...dst}]}
+          current && path && path.length > 0 && <Polyline 
+          coordinates={[{...current},...path]}
           strokeColor={'#8e2be2'}
           strokeWidth={3}
         />
@@ -43,12 +44,18 @@ const Modded = inject('RideStore')(observer((props) =>{
   </React.Fragment>
 }))
 
+
 class HomeScreen extends Component {
   state = {
     mapRegion: null,
     hasLocationPermissions: false,
-    locationResult: null
+    locationResult: null,
+    path:[]
   };
+
+
+  _resetPath = () => {this.setState(state=> ({...state,path:[]}))}
+
 
   static navigationOptions = ({ navigate, navigation }) => ({
     title:'Dashboard',
@@ -73,9 +80,13 @@ class HomeScreen extends Component {
 
   
   componentDidMount() {
+    console.log('====================================');
+    console.log(this.props.RideStore);
+    console.log('====================================');
     this._getLocationAsync();
   }
 
+  
   updateLocation = (data) =>{
       console.log('====================================');
       console.log(data);
@@ -159,7 +170,13 @@ class HomeScreen extends Component {
               region={this.state.mapRegion}
               onRegionChangeComplete={this._handleMapRegionChange}
             >
-              <Modded current={this.state.mapRegion}/>
+              <Modded 
+                  
+                  current={this.state.mapRegion} 
+                  path={this.state.path}
+                  reset={this._resetPath}
+                  
+                  />
             </MapView>
             
         }

@@ -7,6 +7,7 @@ import SideMenu from "../components/SideMenu";
 import MainTabNavigator from "./MainTabNavigator"
 import ProfileView from "./../screens/ProfileView"
 import History from "./../screens/History"
+import NotificationView from "./../screens/NotificationView"
 
 import RideDetail from "./../screens/RideDetail"
 

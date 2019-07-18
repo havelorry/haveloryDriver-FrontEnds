@@ -1,6 +1,5 @@
 import {types} from "mobx-state-tree"
 
-
 const Coordinate = types.model({
     latitude:types.optional(types.number,0),
     longitude:types.optional(types.number,0),
@@ -15,7 +14,8 @@ const Ride = types.model({
     origin:types.optional(Coordinate,{}),
     dst:types.optional(Coordinate,{}),
     fixed:false,
-    current:types.optional(Coordinate,{})
+    current:types.optional(Coordinate,{}),
+    pathString:types.optional(types.string,"")
 }).actions(self=>({
     update(coord1,coord2){
         self.origin.setCoordinate(coord1)
@@ -25,6 +25,10 @@ const Ride = types.model({
 
     setCurrent({latitude,longitude}){
         self.current.setCoordinate({latitude,longitude})
+    },
+
+    setPathString(pathString){
+        self.pathString = pathString
     }
 }))
 

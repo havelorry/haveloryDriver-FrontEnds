@@ -21,3 +21,7 @@ Content-Type: application/json
 ### profile get
 
 GET https://have-drivers.herokuapp.com/driver/profile/?username=9634824810  HTTP/1.1
+
+### Directions GET
+
+GET https://maps.googleapis.com/maps/api/directions/json?origin=gwalior&destination=agra&key=AIzaSyDz_VDMBsGjRBG_VtgStOlcb-MIGfPTL58

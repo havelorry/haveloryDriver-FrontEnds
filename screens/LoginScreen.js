@@ -81,7 +81,8 @@ class LoginScreen extends React.Component {
       })
     }).then(resp => resp.json())
       .catch(err =>{
-        this.setState({fetching:true})
+        this.setState({fetching:false})
+        Alert.alert('Error !!',err.message)
       })
       .then(result => {
         const {token= null,driverId=null} = result

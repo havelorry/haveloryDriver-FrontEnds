@@ -3,13 +3,15 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import RideStore from "./stores/RideStore"
+import HistoryStore from "./stores/HistoryStore"
 import {Provider} from "mobx-react"
 import { observer,inject } from "mobx-react";
 
 console.disableYellowBox = true
 
 const stores = {
-    RideStore
+    RideStore,
+    rides:HistoryStore
 }
 
 const AppWithState = (props) =>  <Provider {...stores}>
