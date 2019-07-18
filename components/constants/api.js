@@ -37,6 +37,8 @@ export const SOCK_URL = `${MAIN_API}/driver/notifications/`
     }
   }
   
+  export const TOKEN_URL = `${MAIN_API}/driver/alerts/`
+
   export const Post = (url,data, extraConfig = {}) => configureFetch({
     ...defaultConfig,
     ...extraConfig,
@@ -49,7 +51,7 @@ export const Get = (url, extraConfig={}) => configureFetch({
     method:'get'
   })(url)
   
-  
+
 
 export {
     loginUrl,

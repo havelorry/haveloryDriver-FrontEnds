@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from "react"
-import { View , Switch, AsyncStorage} from "react-native";
+import { View , Switch, AsyncStorage,Alert} from "react-native";
 import {Header,ListItem} from "react-native-elements"
 import {Bubbles} from "react-native-loader"
 import { Notifications,Permissions} from "expo"
-
+import {TOKEN_URL} from "./../components/constants/API"
 function parseBool(str) {
 
     if (str.length == null) {
@@ -15,45 +15,130 @@ function parseBool(str) {
 }
 
 
-function NotificationView(props){
-   const [inProgress, setInProgress] = useState(false)
-    const [enabled, setEnabled] = useState(false)
-    useEffect(() => {
-        AsyncStorage.getItem('notificationState').then(
-            abool => {
-                setEnabled(parseBool(abool))
-            }
-        )
-    }, [])
-
-
-    const askPermissions = async () => {
-        const permissions = await Permissions.getAsync(Permissions.NOTIFICATIONS)
-        console.log('====================================');
-        console.log(permissions);
-        console.log('====================================');
-        return 0
+class NotificationView extends React.Component{
+    
+    state ={
+        enabled:false,
+        processing:false,
+        message:false
     }
-    const valueChangeListener = (value) =>{
-        if (parseBool(value)) {
-            askPermissions().then(
-                () => console.log('OPER FIN')
-            )
-            AsyncStorage.setItem('notificationState',"true")
-        }else{
-            AsyncStorage.setItem('notificationState',"false")
+
+    async componentDidMount(){
+        const item = await AsyncStorage.getItem('notificationState')
+        if (item != null) {
+            const enabled = parseBool(item)
+            this.setState(state=>({...state,enabled}))
         }
     }
 
-    return <View style={{flex:1}}>
+
+    valueListener = (value) => {
+        console.log(`${value}`.toString())
+        if (value) {
+            Permissions.getAsync(Permissions.NOTIFICATIONS).then(
+                ({status}) => {
+                    console.log('====================================');
+                    if (status == "granted") {
+                        this.setState({processing:true})
+                        this.loadNRegister(value.toString())
+                    } else {
+                        Permissions.askAsync(Permissions.NOTIFICATIONS)
+                        .then(
+                            ({status}) =>{
+                                if (status=="granted") {
+                                    this.setState({processing:true})
+                                    this.loadNRegister(value.toString())
+
+                                }else{
+                                    Alert.alert('Permission denied')
+                                }
+                                // do Whatever
+                            }
+                        )
+                    }
+                    console.log('====================================');
+                } 
+            )
+        }
+        
+    }
+
+    async componentDidUpdate(){
+        const item = await AsyncStorage.getItem('notificationState')
+        if (item != null) {
+            const enabled = parseBool(item)
+            this.setState(state=>({...state,enabled}))
+        }
+    }
+
+    loadToken = async () => {
+         try{
+            const token = await Notifications.getExpoPushTokenAsync()
+            return token
+         }catch(err){
+             return err
+         }   
+    }
+
+    postToken = (url, data) => fetch(url,{
+        method:'post',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(data)
+    })
+
+    loadNRegister = (value) =>{
+        AsyncStorage.getItem('username').then(
+            username => {
+                if (username) {
+                   console.log('============IN LOAD N REFOSTER========================');
+                   this.loadToken().then(token =>{
+                        this.postToken(TOKEN_URL,{username,token,identification:'user'}).then(
+                            this.setState({processing:false},()=>{
+                                this.setState({message:`Notificatons enabled ..`})
+                                this.setState({enabled:value})
+                            })
+                        ).catch(err => {
+                            this.setState({processing:false})
+                            console.log(err.message);
+                            
+                        })
+                   })
+                   console.log('====================================');
+                }
+            }
+        )
+    }
+
+    render(){
+        return <View style={{flex:1}}>
         <Header
             leftComponent={{ icon: 'menu', color: '#fff',onPress:()=>{
-                props.navigation.toggleDrawer()
+                this.props.navigation.toggleDrawer()
             } }}
             centerComponent={{ text: 'Notifications', style: { color: '#fff' } }}
             rightComponent={{ icon: 'home', color: '#fff' }}
         />
 
+
+        {
+            this.state.processing 
+            &&
+            <View style={{height:60,justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+                <Bubbles size={10} color={'#8a2be2'}/>
+                 {
+                     this.state.message 
+                        &&
+                        <ListItem 
+                            title={this.state.message}
+                            leftIcon={{
+                                name:'right'
+                            }}
+                        />
+                 }
+            </View>
+        }
 
         <ListItem 
             title={'Enable Notifications'}
@@ -61,12 +146,15 @@ function NotificationView(props){
             topDivider={true}
             rightElement={
                 <Switch 
-                    value={enabled}
-                    onValueChange={valueChangeListener}
+                    value={this.state.enabled}
+                    onValueChange={
+                        this.valueListener    
+                    }
                 />
             }
         />
     </View>
+    }
 }
 
 
