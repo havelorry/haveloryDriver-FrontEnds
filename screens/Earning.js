@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import { View, Text,AsyncStorage } from 'react-native'
 import { earningUrl } from '../components/constants/api';
 import { Divider } from 'react-native-elements';
-
+import {NavigationEvents} from "react-navigation"
 const CompactCard = {
     justifyContent:'center',
     alignItems:'center',
@@ -62,7 +62,7 @@ function Earning(){
     }
 
     useEffect(() => {
-        AsyncStorage.getItem('userId').then(
+        AsyncStorage.getItem('username').then(
             (userId) =>{
                 console.log('====================================');
                 console.log('called');
@@ -79,6 +79,13 @@ function Earning(){
     console.log({earning,cancelled,completed})
     return (
         <View style={{justifyContent:'space-around',alignItems:'center'}}>
+            <NavigationEvents 
+            onDidFocus={
+                ()=>{
+
+                }
+            }
+            />
             <MoneyCard color={'#d00'} text={cancelled} heading={'Cancelled Rides'}/>
             <MoneyCard color={'#0a0'} text={completed} heading={'Completed Rides'}/>
             <MoneyCard color={'#8e2be2'} text={`${earning} kd`} heading={'Total Earnings'}/>

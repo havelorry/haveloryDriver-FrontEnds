@@ -1,5 +1,5 @@
 const debug = true
-const debugUrl = `http://b7d56b0e.ngrok.io  `
+const debugUrl = `http://b62287eb.ngrok.io`
 const url = debug ? debugUrl:'https://have-drivers.herokuapp.com'
 const key = 'AIzaSyDz_VDMBsGjRBG_VtgStOlcb-MIGfPTL58'
 

@@ -3,7 +3,7 @@ import { View , Switch, AsyncStorage,Alert} from "react-native";
 import {Header,ListItem} from "react-native-elements"
 import {Bubbles} from "react-native-loader"
 import { Notifications,Permissions} from "expo"
-import {TOKEN_URL} from "./../components/constants/API"
+import {TOKEN_URL} from "./../components/constants/api"
 function parseBool(str) {
 
     if (str.length == null) {
@@ -94,7 +94,7 @@ class NotificationView extends React.Component{
                 if (username) {
                    console.log('============IN LOAD N REFOSTER========================');
                    this.loadToken().then(token =>{
-                        this.postToken(TOKEN_URL,{username,token,identification:'user'}).then(
+                        this.postToken(TOKEN_URL,{username,token,identification:'driver'}).then(
                             this.setState({processing:false},()=>{
                                 this.setState({message:`Notificatons enabled ..`})
                                 this.setState({enabled:value})

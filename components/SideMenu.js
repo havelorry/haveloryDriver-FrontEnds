@@ -1,8 +1,28 @@
-import React from "react"
-import {View,Image} from "react-native"
+import React,{useEffect,useState} from "react"
+import {View,Image,AsyncStorage} from "react-native"
 import {Link,Space} from "./ButtonGroup"
 import {DrawerItems} from "react-navigation"
 import {Content} from "./text"
+
+function TitleComponent(props){
+    
+    const [title, setTitle] = useState("")
+    
+    useEffect(() => {
+       AsyncStorage.getItem('username').then(
+           username =>{
+               if (username) {
+                   setTitle(username)
+               }
+           }
+       )
+
+    }, [])
+    return  <Content type={'heading'} align={'center'}>
+    {title}
+</Content>    
+
+}
 
 export default class SideMenu extends React.Component {
 
@@ -11,7 +31,6 @@ export default class SideMenu extends React.Component {
        
     }
 
-   
     render(){
         return <View>
                     <View 
@@ -35,10 +54,9 @@ export default class SideMenu extends React.Component {
                             }}
                         />
 
-                        <Space/>    
-                            <Content type={'heading'} align={'center'}>
-                                {this.props.title || 'Prabhanshu'}
-                            </Content>    
+                        <Space/>
+
+                        <TitleComponent />    
                         <Space/>
 
                         <Link isUnderlined={false} color={'#8a2be2'} onPress={

@@ -32,7 +32,7 @@ export default createDrawerNavigator({
         }
     },
     Notifications:{
-        screen:TestScreen,
+        screen:NotificationView,
         navigationOptions:{
             drawerLabel:'Notifications',
             drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-notifications-outline','md-notifications-outline')} size={20} color={'black'} />

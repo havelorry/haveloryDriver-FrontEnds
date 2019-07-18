@@ -1,5 +1,5 @@
 import {types} from "mobx-state-tree"
-import { riderHistory, Get } from "../components/constants/api";
+import { driverHistory, Get } from "../components/constants/api";
 
 const Ride = types.model({
     "id":                   types.number,
@@ -35,7 +35,7 @@ const RideStore = types.model({
 
     refresh(username){
         self.updateLoading(true)
-        Get(riderHistory(username)).then(
+        Get(driverHistory(username)).then(
             results => {
                 console.log('====================================');
                 results.map(el => {
@@ -68,6 +68,7 @@ const RideStore = types.model({
         switch(ride.status){
             case 'CANCELLED':
             case 'COMPLETED':
+            case 'ACCEPTED':
                 return true
             default: return false
         }
@@ -78,6 +79,5 @@ const RideStore = types.model({
 
 const RideState = RideStore.create()
 
-export {
-    RideState
-}
+export default RideState
+
