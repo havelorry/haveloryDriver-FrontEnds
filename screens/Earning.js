@@ -46,6 +46,7 @@ function Earning(){
     const [earning, setEarning] = useState(0)
     const [cancelled, setCancelled] = useState(0)
     const [completed, setCompleted] = useState(0)
+    
     const getSumaries = (param) =>{
         fetch(earningUrl(param)).then(r => r.json())
                                 .catch(err => console.log(err.message))
@@ -82,7 +83,14 @@ function Earning(){
             <NavigationEvents 
             onDidFocus={
                 ()=>{
-
+                    AsyncStorage.getItem('username').then(
+                        (userId) =>{
+                            console.log('====================================');
+                            console.log('called');
+                            console.log('====================================');
+                                getSumaries(userId)
+                        }
+                    )
                 }
             }
             />

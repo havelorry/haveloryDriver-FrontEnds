@@ -1,5 +1,5 @@
 const debug = true
-const debugUrl = `http://b62287eb.ngrok.io`
+const debugUrl = `http://3fcb89bf.ngrok.io`
 const url = debug ? debugUrl:'https://have-drivers.herokuapp.com'
 const key = 'AIzaSyDz_VDMBsGjRBG_VtgStOlcb-MIGfPTL58'
 
@@ -7,7 +7,7 @@ const loginUrl = `${url}/driver/login/`
 const profileUrl = (username) => `${url}/driver/profile/?username=${username}`
 const saveProfile = `${url}/driver/profile/`
 const updateLocationUrl = `${url}/driver/active/`
-const earningUrl = (driver) =>`GET http://have-drivers.herokuapp.com/driver/earnings/?driver=${driver}`
+const earningUrl = (driver) =>`${url}/driver/earnings/?driver=${driver}`
 export const MAIN_API = debug ? debugUrl :'http://have-drivers.herokuapp.com'
 
 const RideStatus = `${MAIN_API}/driver/rides/`
