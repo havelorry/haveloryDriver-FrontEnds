@@ -84,6 +84,7 @@ class HomeScreen extends Component {
     console.log(this.props.RideStore);
     console.log('====================================');
     this._getLocationAsync();
+    this._watchPostion()
   }
 
   
@@ -120,6 +121,30 @@ class HomeScreen extends Component {
       }  
   };
 
+
+  _watchPostion = () =>{
+    this.watchId = navigator.geolocation.watchPosition((position) =>{
+      const {coords} =position
+      const {latitude,longitude} = coords
+      AsyncStorage.getItem('username').then(
+        username => {
+          if(username){
+           this.updateLocation({
+             location:JSON.stringify({
+               x:latitude,
+               y:longitude
+             }),
+             username,
+             active:1
+          })
+
+         }else{
+           console.log("USERNAME NOT FOUND");
+         }
+        }
+      )   
+    })
+  }
   
   _getLocationAsync = async () => {
    let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -154,6 +179,13 @@ class HomeScreen extends Component {
    // Center the map on the location we just fetched.
     this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
   };
+
+
+  componentWillUnmount() {
+    if (this.watchId) {
+      navigator.geolocation.clearWatch(this.watchId)
+    }
+  }
 
   render() {
     return (
