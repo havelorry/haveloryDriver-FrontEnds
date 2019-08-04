@@ -84,13 +84,13 @@ function Earning(){
             onDidFocus={
                 ()=>{
                     AsyncStorage.getItem('username').then(
-                        (userId) =>{
-                            console.log('====================================');
-                            console.log('called');
-                            console.log('====================================');
-                                getSumaries(userId)
-                        }
-                    )
+            (userId) =>{
+                console.log('====================================');
+                console.log('called');
+                console.log('====================================');
+                    getSumaries(userId)
+            }
+        )
                 }
             }
             />

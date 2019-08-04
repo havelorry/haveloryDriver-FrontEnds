@@ -38,7 +38,7 @@ class RideDetail extends React.Component{
               if(username){
                this.updateLocation({
                  username,
-                 active:0,
+                 active:1,
                  status:'busy'
               })
              }else{
@@ -115,7 +115,7 @@ class RideDetail extends React.Component{
         style={{height:40}}
         disabled={this.props.rides.controlDisabled} 
         title={ update ? 'loading ...':'Accept'}
-        
+        color={'#8a2be2'}    
         onPress={
             () => {
                 this.updateRideStatus({
