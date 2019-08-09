@@ -27,15 +27,15 @@ export default class SettingsScreen extends React.Component {
   }
 
   render() {
-    console.log('====================================');
-    const {property,inputValue,user} = this.state
-    console.log('====================================');
+
+    const {inputValue,user} = this.state
+    const {property} = this.props.navigation.state.params
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     return <View style={{flex:1}}>
        <Card title={property && transformInput(property)} titleStyle={{textAlign:'left'}}>
         <Input 
-            placeholder={inputValue && inputValue}
+            placeholder={inputValue && `${inputValue}`}
             defaultValue={inputValue && inputValue}
             onChangeText= {
               (value) =>  {
@@ -54,8 +54,12 @@ export default class SettingsScreen extends React.Component {
         <Button
           onPress = {
             () => {
+
+              console.log('====================================');
+              console.log(this.state.user);
+              console.log('====================================');
               fetch(saveProfile,{
-                method:'post',
+                method:'put',
                 headers:{
                   'Content-Type':'application/json'
                 },
@@ -65,7 +69,7 @@ export default class SettingsScreen extends React.Component {
               }).then(
                 (resp) => {
                   console.log(resp)
-                  this.props.navigation.goBack()
+                  this.props.navigation.navigate('Settings')
                 }
               ).catch(
                 err => Alert.alert('Some error')

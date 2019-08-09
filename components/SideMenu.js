@@ -1,18 +1,21 @@
 import React,{useEffect,useState} from "react"
-import {View,Image,AsyncStorage} from "react-native"
+import {View,Image,AsyncStorage,Text} from "react-native"
 import {Link,Space} from "./ButtonGroup"
 import {DrawerItems} from "react-navigation"
 import {Content} from "./text"
+import { MAIN_API } from "./constants/api";
 
 function TitleComponent(props){
     
     const [title, setTitle] = useState("")
     
     useEffect(() => {
-       AsyncStorage.getItem('username').then(
+       AsyncStorage.getItem('first_name').then(
            username =>{
                if (username) {
                    setTitle(username)
+               }else{
+                   setTitle("User Name")
                }
            }
        )
@@ -22,6 +25,22 @@ function TitleComponent(props){
     {title}
 </Content>    
 
+}
+
+class WithProfile extends React.Component{
+    state ={
+        pic:""
+    }
+    componentDidMount() {
+        AsyncStorage.getItem('profilePic').then( pic => this.setState(state=>({
+            ...state,
+            pic
+        })))
+    }
+
+    render(){
+        return this.props.children(this.state.pic)
+    }
 }
 
 export default class SideMenu extends React.Component {
@@ -41,18 +60,32 @@ export default class SideMenu extends React.Component {
                             alignItems: 'center',
                             justifyContent: 'center',
                             borderBottomColor:'#eee',
-                            borderWidth:1
+                            borderWidth:1,
+                            marginTop:30
                         }}
 
                     >
-                        <Image 
-                            source={require('./../assets/images/avatar.png')}
-                            style ={{
-                                width:80,
-                                height:80,
-                                borderRadius:50
-                            }}
-                        />
+                        <WithProfile>
+                            {
+                                profilePic => (<View>
+                                    <Image 
+                                    source={
+                                        profilePic != null 
+                                        ?
+                                        {uri:`${MAIN_API}/media/${profilePic}`}
+                                        :
+                                        require('./../assets/images/avatar.png') 
+                                    }
+                                    style ={{
+                                        width:80,
+                                        height:80,
+                                        borderRadius:50
+                                    }}
+                                />
+                                
+                            </View>)
+                            }
+                        </WithProfile>
 
                         <Space/>
 

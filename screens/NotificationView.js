@@ -117,6 +117,8 @@ class NotificationView extends React.Component{
             leftComponent={{ icon: 'menu', color: '#fff',onPress:()=>{
                 this.props.navigation.toggleDrawer()
             } }}
+
+            backgroundColor={'#8a2be2'}
             centerComponent={{ text: 'Notifications', style: { color: '#fff' } }}
             rightComponent={{ icon: 'home', color: '#fff' }}
         />

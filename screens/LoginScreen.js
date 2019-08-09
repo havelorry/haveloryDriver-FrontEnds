@@ -120,9 +120,9 @@ class LoginScreen extends React.Component {
           ])
         }
 
-        this.setState({fetching:true})
+        this.setState({fetching:false})
       }).catch(w => {
-        this.setState({fetching:true})
+        this.setState({fetching:false})
       })
   };
 
