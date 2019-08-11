@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ### profile get
 
-GET https://have-drivers.herokuapp.com/driver/profile/?username=9634824810  HTTP/1.1
+GET http://167.71.192.77:4000/driver/profile/?username=9634824810  HTTP/1.1
 
 ### Directions GET
 

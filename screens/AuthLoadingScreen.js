@@ -9,11 +9,17 @@ export default class AuthLoadingScreen extends React.Component {
     }
 
     async componentDidMount(){
+        console.log('====================================');
+        console.log('ON MOUNT');
+        console.log('====================================');
         const token = await AsyncStorage.getItem('token')
         if(token)
-            AsyncStorage.getItem('username').then(username => {
+            await AsyncStorage.getItem('username').then(username => {
                 this.pullProfile(username,()=>{
+                    console.log('============PULLING========================');
                     this.props.navigation.navigate('Main')
+                    console.log('====================================');
+                    
                 })
             })
             

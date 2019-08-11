@@ -4,44 +4,22 @@ import {Link,Space} from "./ButtonGroup"
 import {DrawerItems} from "react-navigation"
 import {Content} from "./text"
 import { MAIN_API } from "./constants/api";
-
+import {NavigationContextConsumer} from "./../navigation/NavigationContext"
 function TitleComponent(props){
-    
-    const [title, setTitle] = useState("")
-    
-    useEffect(() => {
-       AsyncStorage.getItem('first_name').then(
-           username =>{
-               if (username) {
-                   setTitle(username)
-               }else{
-                   setTitle("User Name")
-               }
-           }
-       )
 
-    }, [])
-    return  <Content type={'heading'} align={'center'}>
-    {title}
-</Content>    
+    return  <NavigationContextConsumer>
+        {
+        ({displayName}) =>(<Content type={'heading'} align={'center'}>
+            {
+               displayName
+            }
+        </Content>)
+        }
+    </NavigationContextConsumer>    
 
 }
 
-class WithProfile extends React.Component{
-    state ={
-        pic:""
-    }
-    componentDidMount() {
-        AsyncStorage.getItem('profilePic').then( pic => this.setState(state=>({
-            ...state,
-            pic
-        })))
-    }
 
-    render(){
-        return this.props.children(this.state.pic)
-    }
-}
 
 export default class SideMenu extends React.Component {
 
@@ -65,12 +43,12 @@ export default class SideMenu extends React.Component {
                         }}
 
                     >
-                        <WithProfile>
+                        <NavigationContextConsumer>
                             {
-                                profilePic => (<View>
+                                ({profilePic}) => (<View>
                                     <Image 
                                     source={
-                                        profilePic != null 
+                                        (profilePic != "" || profilePic !== null) 
                                         ?
                                         {uri:`${MAIN_API}/media/${profilePic}`}
                                         :
@@ -85,7 +63,7 @@ export default class SideMenu extends React.Component {
                                 
                             </View>)
                             }
-                        </WithProfile>
+                        </NavigationContextConsumer>
 
                         <Space/>
 

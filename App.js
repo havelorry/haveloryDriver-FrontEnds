@@ -6,6 +6,8 @@ import RideStore from "./stores/RideStore"
 import HistoryStore from "./stores/HistoryStore"
 import {Provider} from "mobx-react"
 import { observer,inject } from "mobx-react";
+import {NavigationContextProvider} from './navigation/NavigationContext'
+import { NavigationContextConsumer } from './navigation/NavigationContext';
 
 console.disableYellowBox = true
 
@@ -15,7 +17,13 @@ const stores = {
 }
 
 const AppWithState = (props) =>  <Provider {...stores}>
-  <AppNavigator />
+  <NavigationContextProvider>
+    <NavigationContextConsumer>
+      {
+        (values) => (<AppNavigator {...values} />)
+      }
+    </NavigationContextConsumer>
+  </NavigationContextProvider>
 </Provider>
 
 export default class App extends React.Component {

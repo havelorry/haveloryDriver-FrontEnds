@@ -4,6 +4,7 @@ import {View} from "react-native"
 import {transformInput} from "./ProfileView"
 
 import {saveProfile} from "./../components/constants/api"
+import { NavigationContextConsumer } from '../navigation/NavigationContext';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = (navigation) =>({
@@ -49,36 +50,42 @@ export default class SettingsScreen extends React.Component {
             }       
         />
 
+<NavigationContextConsumer>
+  {
+    ({setDisplayName})=>(<Button
+      onPress = {
+        () => {
+
+          console.log('====================================');
+          console.log(this.state.user);
+          setDisplayName(this.state.user.first_name)
+          console.log('====================================');
+          fetch(saveProfile,{
+            method:'put',
+            headers:{
+              'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+              ...this.state.user
+            })
+          }).then(
+            (resp) => {
+              console.log(resp)
+              this.props.navigation.navigate('Settings')
+            }
+          ).catch(
+            err => Alert.alert('Some error')
+          )
+        }
+      }
+      disabled={this.state.saving} 
+      title={ this.state.saving ? 'Saving ...':'Save'}
+    />)
+  }
+</NavigationContextConsumer>
         <Divider style={{ backgroundColor: '#eee' }} />
         <View style={{height:10}} />
-        <Button
-          onPress = {
-            () => {
-
-              console.log('====================================');
-              console.log(this.state.user);
-              console.log('====================================');
-              fetch(saveProfile,{
-                method:'put',
-                headers:{
-                  'Content-Type':'application/json'
-                },
-                body:JSON.stringify({
-                  ...this.state.user
-                })
-              }).then(
-                (resp) => {
-                  console.log(resp)
-                  this.props.navigation.navigate('Settings')
-                }
-              ).catch(
-                err => Alert.alert('Some error')
-              )
-            }
-          }
-          disabled={this.state.saving} 
-          title={ this.state.saving ? 'Saving ...':'Save'}
-        />
+        
        </Card>
     </View>;
   }

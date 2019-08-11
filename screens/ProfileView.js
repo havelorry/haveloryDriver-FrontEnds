@@ -27,6 +27,7 @@ export default class ProfileView extends React.Component {
 
     componentDidMount() {
         this.pullProfile();
+        console.log(this.props)
     }
 
 
@@ -110,7 +111,7 @@ export default class ProfileView extends React.Component {
                 centerComponent={{ text: 'Profile', style: { color: '#fff' } }}
                 rightComponent={{ icon: 'home', color: '#fff', onPress:()=>{
                     this.props.navigation.navigate('Main')
-                } }}
+                }}}
                 />
 
              <View style={{justifyContent:'center',alignItems:'center', maxHeight:200,paddingVertical:10}} >
