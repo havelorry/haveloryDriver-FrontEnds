@@ -95,7 +95,7 @@ class History extends React.Component {
 }
 
 History.navigationOptions = ({navigation}) =>({
-    title:'Ride History',
+    title:navigation.getScreenProps().t('rideHistory'),
     headerLeft:<View style={{marginLeft:11}}>
         <FontAwesome name={'arrow-left'} size={18} onPress={
         (e)=>{

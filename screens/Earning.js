@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import { View, Text,AsyncStorage } from 'react-native'
 import { earningUrl } from '../components/constants/api';
 import { Divider } from 'react-native-elements';
-import {NavigationEvents} from "react-navigation"
+import {NavigationEvents, withNavigation} from "react-navigation"
 const CompactCard = {
     justifyContent:'center',
     alignItems:'center',
@@ -30,17 +30,23 @@ const Card = ({text,color}) => <View style={[CompactCard,{backgroundColor:color}
         </Text>
 </View>
 
-const MoneyCard = (props) => (<View style={{width:'100%',justifyContent:'center',alignItems:'center',paddingHorizontal:30,paddingVertical:20}}>
+const MoneyCard = withNavigation((props) => {
+    
+    const {navigation} = props
+    const screenProps = navigation.getScreenProps()
+        
+    return (<View style={{width:'100%',justifyContent:'center',alignItems:'center',paddingHorizontal:30,paddingVertical:20}}>
     <Card {...props}/>
 
     <Divider />
 
     <Text style={HeadngTxt}>
-        {props.heading}
+        {screenProps.t(props.heading)}
     </Text>
 
 
 </View>)
+})
 
 function Earning(){
     const [earning, setEarning] = useState(0)
@@ -101,8 +107,11 @@ function Earning(){
     )
 }
 
-Earning.navigationOptions = {
-    title:'Earnings'
+Earning.navigationOptions = ({navigation}) =>{
+    const screenProps = navigation.getScreenProps()
+    return {
+        title:screenProps.t('earnings')
+    }
 }
 
 export default Earning

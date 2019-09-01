@@ -11,6 +11,7 @@ import NotificationView from "./../screens/NotificationView"
 
 import RideDetail from "./../screens/RideDetail"
 
+
 export const asset = (x,y) => Platform.OS == 'ios' ? x:y 
 
 const HistoryStack = createStackNavigator({
@@ -22,49 +23,73 @@ const HistoryStack = createStackNavigator({
 
 
 export default createDrawerNavigator({
-    
-    Ride:MainTabNavigator,
-    Stats:{
+     
+    Ride:{
+        screen:MainTabNavigator,
+        navigationOptions:({navigation})=>{
+            const trans = navigation.getScreenProps();
+            return ({
+                drawerLabel:trans.t('dashboard'),
+                drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-car','md-car')} size={20} color={'black'} />
+            })
+        }
+    },
+    /*Stats:{
         screen:TestScreen,
         navigationOptions:{
             drawerLabel:'Driver Stats',
             drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-card','md-card')} size={20} color={'black'} />
         }
-    },
+    },*/
+
     Notifications:{
         screen:NotificationView,
-        navigationOptions:{
-            drawerLabel:'Notifications',
-            drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-notifications-outline','md-notifications-outline')} size={20} color={'black'} />
+        navigationOptions:({navigation})=>{
+            const trans = navigation.getScreenProps();
+            return ({
+                drawerLabel:trans.t('notifications'),
+                drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-notifications-outline','md-notifications-outline')} size={20} color={'black'} />
+            })
         }
     },
-    Invites:{
+    
+    /*Invites:{
         screen:TestScreen,
         navigationOptions:{
             drawerLabel:'My Referels',
             drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-gift','md-gift')} size={20} color={'black'} />
         }
-    },
+    },*/
+
     History:{
         screen:HistoryStack,
-        navigationOptions:{
-            drawerLabel:'Ride History',
-            drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-refresh','md-refresh')} size={20} color={'black'} />
+        navigationOptions:({navigation})=>{
+            const trans = navigation.getScreenProps();
+            return ({
+                drawerLabel:trans.t('rideHistory'),
+                drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-refresh','md-refresh')} size={20} color={'black'} />
+            })
         }
     },
     
     Help:{
         screen:TestScreen,
-        navigationOptions:{
-            drawerLabel:'Help',
-            drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-help','md-help')} size={20} color={'black'} />
+        navigationOptions:({navigation})=>{
+            const trans = navigation.getScreenProps();
+            return ({
+                drawerLabel:trans.t('help'),
+                drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-help','md-help')} size={20} color={'black'} />
+            })
         }
     },
     Settings:{
         screen:ProfileView,
-        navigationOptions:{
-            drawerLabel:'Settings',
-            drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-options','md-options')} size={20} color={'black'} />
+        navigationOptions:({navigation})=>{
+            const trans = navigation.getScreenProps();
+            return ({
+                drawerLabel:trans.t('settings'),
+                drawerIcon:({tintColor}) =><Icon.Ionicons name={asset('ios-options','md-options')} size={20} color={'black'} />
+            })
         }
     }
 
@@ -72,3 +97,5 @@ export default createDrawerNavigator({
     initialRouteName:'Ride',
     contentComponent:SideMenu
 })
+
+

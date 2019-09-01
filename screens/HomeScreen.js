@@ -57,8 +57,14 @@ class HomeScreen extends Component {
   _resetPath = () => {this.setState(state=> ({...state,path:[]}))}
 
 
-  static navigationOptions = ({ navigate, navigation }) => ({
-    title:'Dashboard',
+  static navigationOptions = ({ navigate, navigation }) => {
+   
+    const screenProps = navigation.getScreenProps();
+    console.log('====================================');
+    
+    console.log('====================================');
+    return ({
+    title:screenProps.t('dashboard'),
     headerRight: (
       <Ionicons 
         name={Platform.OS=='ios'?'ios-more':'md-more'}
@@ -77,6 +83,8 @@ class HomeScreen extends Component {
       />
     )
   })
+
+}
 
   
   componentDidMount() {
@@ -192,11 +200,19 @@ class HomeScreen extends Component {
       <View style={styles.container}>
         {
           this.state.locationResult === null ?
-          <Text>Finding your current location...</Text> :
+          <Text>{
+            this.props.navigation.getScreenProps().t('Finding_location')
+          }</Text> :
           this.state.hasLocationPermissions === false ?
-            <Text>Location permissions are not granted.</Text> :
+            <Text>
+              {this.props.navigation.getScreenProps().t('Location_not_granted.')}
+              </Text> :
             this.state.mapRegion === null ?
-            <Text>Map region doesn't exist.</Text> :
+            <Text>
+              {
+                this.props.navigation.getScreenProps().t("Map_exist.")
+              }
+            </Text> :
             <MapView
               style={{ alignSelf: 'stretch', height:height }}
               region={this.state.mapRegion}
@@ -227,6 +243,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems:'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
   },

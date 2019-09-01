@@ -105,12 +105,12 @@ export default class ProfileView extends React.Component {
 
             <Header
                 leftComponent={{ icon: 'chevron-left', color: '#fff', onPress:()=>{
-                    this.props.navigation.navigate('Main')
+                    this.props.navigation.navigate('Auth')
                 }}}
                 backgroundColor={'#8a2be2'}
                 centerComponent={{ text: 'Profile', style: { color: '#fff' } }}
                 rightComponent={{ icon: 'home', color: '#fff', onPress:()=>{
-                    this.props.navigation.navigate('Main')
+                    this.props.navigation.navigate('Auth')
                 }}}
                 />
 

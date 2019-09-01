@@ -31,18 +31,23 @@ const DashStack = createStackNavigator({Home:{
   screen:HomeScreen
 }})
 
-DashStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-home${focused ? '' : '-outline'}`
-          : 'md-home'
-      }
-    />
-  ),
+DashStack.navigationOptions = ({navigation}) => {
+  
+  const screenP = navigation.getScreenProps()
+  
+  return {
+    tabBarLabel: screenP.t('home'),
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        focused={focused}
+        name={
+          Platform.OS === 'ios'
+            ? `ios-home${focused ? '' : '-outline'}`
+            : 'md-home'
+        }
+      />
+    ),
+  }
 };
 
 
@@ -50,17 +55,21 @@ const EarningStack = createStackNavigator({
   Earnings
 })
 
-EarningStack.navigationOptions = {
-  tabBarLabel: 'Earnings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'logo-usd' : 'logo-usd'}
-    />
-  ),
+EarningStack.navigationOptions = ({navigation}) => {
+  
+  const screenP = navigation.getScreenProps()
+  return {
+    tabBarLabel: screenP.t('earnings'),
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        focused={focused}
+        name={Platform.OS === 'ios' ? 'logo-usd' : 'logo-usd'}
+      />
+    ),
+  }
 };
 
-const SettingsStack = createStackNavigator({
+/*const SettingsStack = createStackNavigator({
   Refferels: LinksScreen,
   EditSettings:SettingsScreen
 },{
@@ -76,11 +85,11 @@ SettingsStack.navigationOptions = {
     />
   ),
 };
+*/
 
 export default createBottomTabNavigator({
   DashStack,
-  EarningStack,
-  SettingsStack  
+  EarningStack
 },);
 
 
