@@ -1,5 +1,5 @@
 import React from "react"
-import {AsyncStorage,View,Button,Image, ScrollView} from "react-native"
+import {AsyncStorage,View,Button,Image, ScrollView,Text,Picker} from "react-native"
 import {loginUrl, profileUrl,MAIN_API} from "./../components/constants/api"
 import { ListItem,Header } from 'react-native-elements'
 import {DocumentPicker} from "expo"
@@ -98,6 +98,8 @@ export default class ProfileView extends React.Component {
             }
         )
 
+        const  {setLocale,locale} =this.props.navigation.getScreenProps()
+
         return <View>
             <NavigationEvents 
                 onDidFocus={this.pullProfile}
@@ -148,6 +150,22 @@ export default class ProfileView extends React.Component {
              </View>   
 
             <ScrollView>
+            <ListItem
+            title={'Switch  language'}
+            rightElement={
+                <Picker
+                selectedValue ={locale || 'en'}
+                style={{height: 50, width: 100}}
+                onValueChange ={
+                    (value,index)  => setLocale(value)
+                }
+                prompt={'Select Your Language'}
+                >
+                  <Picker.Item value={'en'} label="English"/>
+                  <Picker.Item value={'ar'} label="Arabic"/>      
+                </Picker>
+            }
+            />
             {
                 entries.map(
                     ({left,right,original},index) => <ListItem 
@@ -175,6 +193,8 @@ export default class ProfileView extends React.Component {
                     />
                 )
             }
+
+                
             </ScrollView>
         </View>
     }
