@@ -26,7 +26,7 @@ const  AppContainer =  createAppContainer(createSwitchNavigator({
 
 export default class AppWithLocalization extends React.Component {
   state = {
-    locale: Localization.locale,
+    locale: Localization.locale.search('en') !=-1?'en':'ar',
   };
 
   setLocale = locale => {
